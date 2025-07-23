@@ -1,2 +1,2 @@
 # Ansible-Course
-My ansible course Note that i teached to my co-workers
+My ansible course Notes that i teached to my co-workers
