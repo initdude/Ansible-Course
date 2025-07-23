@@ -1,0 +1,192 @@
+at the first of course as always we talk a little about DevOps culture and fundamentals:
+=====================================================================================================================================================================
+DevOps has its own layers>>> like from NOC level 3 (Just watchig the monitors improved to NOC lvl2 and.... then admin then DevOps)
+R&D is one of the DevOps tasks,>>> stress test pen test buissines test syntax test checking pilpleines >>> with a good tps must give it to operation team and opertating team give a feedback and also the DevOps team must check it again>>>> and hands it to Operations team>>>> and operations admins must not install kubernetes the must just keep the process up and running like containers of services >>> he can ownself test and fix the problem then he will be in devops team or just call the devops team to fix the problem.
+=====================================================================================================================================================================
+ditribution cluster storge>>> ceph,rookceph, minio =/=/ NFS or treditional methods
+DO not name the devops team first, its better to do the task first, then named it.
+devops >>> operation,development,application delivery /// devsecops >>> operations,development,application delivery, security(soc)
+
+=====================================================================================================================================================================
+
+The target of DevOps is to deliver the changes ASAP to the customers:
+Problem:
+as seeing a problem in Operations each team in operations tries to attributes the problem to other teams. so whats the solutions??? below i will explain it for you:
+
+SOLUTION:
+1.Collaboration 
+2.remove wall between operations and developers
+3.Use DevOps engineering tools
+
+what is the benefits??
+1.troubleshooting speed>>> we have monitoring, tps and downtime are cheked everysecond and etc...
+2.Isolation Environment >> dockerized and container base....
+3.Performance Tuning>>> we are using tools that agile is
+4.Fail Over>>> we have HA
+5.Resource and Cost Redaction >>> by conternizations we use less resource
+6.Increased Performance >>>
+7.Job Satisfaction 
+=====================================================================================================================================================================
+CALMS Model
+
+CULTURE >> Shared Responsibility, Embrace Change
+AUTOMATION >> CI/CD, Infrastructure as Code
+LEAN >> Focus on proucting value for end-user, small batche Sizes (ex. Delete redundant work and useless with R&D...)
+MEASURMENT >> Measure Everything, Show the Improvement (Unless we know where we are, we will not know where we want to go,,, Infrastruture Monitoring, Log Management, Application and Performance Monitoring)
+SHARING >> User-friendly comminuation channels between development and operations(Share informations and Results with Coworker)
+
+
+=====================================================================================================================================================================
+
+knowledge management >>>> KM>>> Alfresco(good for knowledge management),Sentry(good for tracking)
+
+=====================================================================================================================================================================
+
+after all jobs done in CI/CD pipelines, we can notify Developers with a tools like "RocketChat"
+
+=====================================================================================================================================================================
+Openshift is a kubernetese(NOT DOCKER), that Redhat has developed it with more fancy styles and dashboard. in the other way its a tool for clustering several CRIs, like several docker and cluster them and also just run on Centos or RHEL. it uses podman instead of kubectl. but the Kernel is K8S.
+=====================================================================================================================================================================
+Different Types of Repository in DevOps:
+1- Source Code REpository: Only Development Phase
+2- Artifact Repository : Development and Operation Phase: an artifact repository is meant to store machine files. This can include:        binary files
+test data files
+library files. Effectively, is a database for files that people dont generally use.
+
+3- Configuration Management Database: Development and Operation phase.
+Configuration Management Database or "CMDB" is a relational database multiple systems and applications related to configuration 
+management. including Services, Servers, applications and database to name a few.
+***we can use "sentry" as code database (CMDB) to have all codes in its database and both developers and operation teams can use it.
+
+
+=====================================================================================================================================================================
+Infrastructure-as-a-Code (Install)& ConfigurationManagement-as-a-Code (Change and Deployment Configuration) (IaaC & CaaC)
+
+=====================================================================================================================================================================
+Here Starts Main Ansible Course:
+
+
+in ansible we call the jobes "TASK", and we call the project that task will done for it "ROLES"
+
+we set some Hosts in a file like my_servers that icludes the list of our desired hosts that jobs must done on them, so we name the
+ list that includes the list of hosts (my_servers) Group_name (like vm_tools_update), and we put "my servers" and Group _name file that include all servers and ips and ports... in a directory named "INVENTORY" (like /inventory/mycluster in Kubespray or simpler /inventory/hostsfile >> insdie the hostfile we write groups like: postgres: under it desired hosts ips, after it docker: under it desired host ips, and ....)
+
+and also on the other side we have a project that we have set some tasks that must be done on a group_name, we define which project
+ is for which group name, we call the upper directory of this flow "PLAYBOOK"(playbook_project1.yml)
+by meaning we have a dir named ROLES and in the roles dir, we create a dir per project.
+for example we have a role named init, in the innit role, we have several task like install packages, copy files, apply template 
+and..., then we have a role for installing docker, in this role we must define its own tasks, like if we want to update the package-
+manament, we must define it in thit role's tasks, and then install docker commands, then we have a role named postgres, we must
+ define its own tasks and....
+
+so whtas a playbook??? its just simple, playbook means a series of jobs that runs on desired hosts.
+
+                                      .::ANSIBLE PLAYBOOKS ARCHITECTURE::.
+                                      
+We have 3 main dir in ansible, Roles Dir and Inventory Dir, and Playbooks Dir.
+in the inventory dir as i said before we have a Host_file(can be any name) that includes group_name and ips...
+here is how the inventory file can be:
+---
+all:
+  children: ==>> # sub group or nested group
+    webservers: ==>> # One child group (webservers)
+	   hosts:
+	     web1: # Another host inside webservers group
+		   ansible_host: 192.168.100.10
+		 web2:
+		   ansible_host: 192.168.100.11 
+	kubernetes:  # Another child group (kubernetes)
+	  hosts:
+	     master1: # Host inside kubernetes group
+		   ansible_host: 192.168.80.10
+		 master2: # Another host inside kubernetes group
+		   ansble_host: 192.168.80.11
+		   
+
+so in ansible inventory of we want to use nested group we must first define children and under it we define outr groups and hosts.
+	    
+  
+in Roles dir we have 7 sub dir, 1-Defaults 2-Files 3-Handlers 4-Tasks 5-Meta 6- Template 7-Vars that all of them includes it own 
+yml files.
+
+
+Ansible Running PLAYBOOK
+
+ansible-playbook -i inventory/inventory.yml playbook.yml --switchs 
+
+	-v: verbose for view detail error (-v -vv -vvv)
+	--tags=tag_name: RUN ONLY tag_name used into tasks/main.yml
+	--tags"tag_name1,tag_name2,...." => select tags for RUN
+	--skip-tags "tag_name,..." Select tags fot NOT RUN
+	--step: (y/n/c)
+	--list-tasks: List of tasks in YML fie without RUN
+	--extra-vars VarName="Value" => creat Variable
+	--syntax-check : yml file checking syntax
+	--check(Dry-run mode)=> check yml file without RUN and Download
+		
+we must make ssh passless connection between ansible node and hosts.
+we can do it in 2 way==> 1- ssh_config in ~/.ssh/ssh_config  2- direct use of ssh and copy id of it
+
+how to configure passless ssh between ansible and hosts:
+in ansible node:
+	ssh-keygen -t rsa -b 2048 (it suggested to set pass to ssh key)
+	ssh-copy-id -p**** host1
+and we an try connecting to hosts from ansible with no password
+Note: it's better to not gain root access to ansible, its better to create a user for ansible on all hosts with necessary privlages.
+
+
+
+we must write some files in ansible machine to recognize the hosts and tasks ansible must do on them
+
+for a basic test we can do this steps:
+	
+create ansible dir on ansible node and cd ansible
+	mkdir inventory
+	mkdir -p inventory/group_vars
+	touch inventory.yml inventory
+	vim inventory/inventory.yml
+		---
+		all:
+		  children: [sub group of all]
+			ansible_course: [sub group of children that can includes hosts]
+			  hosts:
+			    192.168.1.100 [just an example]
+				
+
+we must also add some variable in group_vars, so:
+   
+   vim inventory/group_vars/all.yml
+		---
+		anible_user: initdude
+		ansible_beome: true
+		ansible_password: <secure_password>
+		ansible_port: 7899 [your current ssh port]
+		
+
+after it we must test the connection between ansible node and other Hosts, by this commmand:
+	
+	ansible all -i inventory/inventory.yml -m ping 
+     
+	all refers to the group we defined in inventory.yml it means ansible will connect to all of the host in the inventory.yml 
+	no matter what group they are in.
+	we can use just group name to check just one group like this:
+	
+		ansible -i ansible_course inventory/inventory.yml -m ping
+
+
+this command will return a GREEN PONG output like this:
+
+    192.168.1.100 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.10"
+    },
+    "changed": false,
+    "ping": "pong"
+	
+	
+	
+	
+
+
+
+
