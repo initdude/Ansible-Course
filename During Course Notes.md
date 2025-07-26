@@ -153,11 +153,10 @@ all:
 
 > Use `children` for nested groups
 
-### Role Directory Structure
+### Roles Directory Structure
 
 ```
 roles/
-  init/
     defaults/
     files/
     handlers/
@@ -302,12 +301,30 @@ ansible ansible_course -i inventory/inventory.yml \
   shell=/bin/bash comment="User One" password=<hashed_password>'
 ```
 
-> Generate password:
+> Generate a hashed password:
 
 ```bash
 python3 -c "import crypt; print(crypt.crypt('SecretPass', crypt.mksalt(crypt.METHOD_SHA512)))"
 ```
+> suggestion: It's better to use "Ansible Vault" for Sensetive data like password. we will talk aout it in future.
 
----
+### 5. Deploy from Source Control
 
-*End of Initial Notes. Ready for GitHub formatting.*
+```bash
+ansible -m git -a "repo=github.com/repo.git dest=/srv/myapp" ansible_course
+```
+### 6. Managing Services
+
+```bash
+ansible -m service -a "name=httpd state=restart" ansible_course
+```
+### 7. Gathering Facts
+  > Gather Facts Modules:
+       _ This module takes care of executing the configured facts modules. The default is to use the **setup** module.
+  
+```bash
+ansible -m setup ansible_course 
+**OR**
+ansible -m gather_facts ansible_cource
+```
+> The output of this command is GREEN and shows all informations of Server (ansible Host)
