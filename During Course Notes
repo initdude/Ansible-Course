@@ -182,9 +182,90 @@ this command will return a GREEN PONG output like this:
     },
     "changed": false,
     "ping": "pong"
+
+now everythins is ready to start the main commands of ansible and test all features of it.
+
+Green ==> The task was successful and nothing was changed on the host.
+Yellow ==> The task was successful and made changes to the host configuration.
+Red ==> The task failed. This can happen if the host is unreachable or if an error occurred during execution.
+Blue ==> The task was skipped, usually due to a conditional statement such as when.
+Cyan ==>Debug, notice, or info messages from Ansible (often from debug module).
+Magenta	(Rare)==> sometimes used in plugins or verbose output to highlight specific notices or warnings.
+White ==> Standard output with no state change, often used for headings, play names, or structural info
+
+**we can adjust the verbosity of Ansible output using the -v, -vv, or -vvv flags, and disable color output by setting the environment variable ANSIBLE_NOCOLOR=1.**
 	
+
+
+we have 2 main method to get task done on host with ansible
+	1- ansible ad-hoc ==> one command --> one task--> result (point to point - one by one)
+	2- ansible playbook ==> several tasks with just one command, or in one time (n tasks on n host execute just in one time)
+
+
+Now lets see ho many Command does ad-hoc has
+	ad-hoc is like: something that you might type in to do some task really quick, but don't want to save it for later.
+		For example:
+			1- Parallelism and shell Commands
+			2- File Trasnsfer 
+			3- Managing Packages
+			4- Users and Groups
+			5- Deploy From Source Control
+			6- Managing Services
+			7- Fathering Facts (for example all the information of the host:IP, Model and etc...)
+
+now lets check some examples for each Command;
+**Note: we can define the host in /etc/ansible/hosts to use the simple method for ad-hoc or we can use our defined hosts in inventory for test.
+**
+1-	Parallelism and shell Commands:
+		Command:
+			ansible all -i /inventory/inventory.yml -m shell -a '/sbin/reboot' OR ansible -m shell -a '/sbin/reboot' all ==> the result is rebooting the host
+
+			ansible all -i ansible/inventory/inventory.yml -m shell -a 'free -m' OR asible -m shell -a 'free -m' all   ==> it will show the mem and swap (YELLOW)
+
+**		IMPORTANT NOTE: we can define the group of host that we want to run command on them, by replacing all at the end of command with group_name
+**
+2-	File Transfer: Copy From Ansible To Host
+		Command:
+			ansible -i inventory/inventory.yml -m copy -a "src=/home/file" dest=/opt/file" ansible_course
+
+			OUTPUT IS : (YELLOW)
+				192.168.100.11 | CHANGED => {
+    				"ansible_facts": {
+  			        "discovered_interpreter_python": "/usr/bin/python3.10"
+    					},
+   					 "changed": true,
+  				     "checksum": "636aaae098ad6c0604b5b3e1aced3c7a04d93f25",
+   					 "dest": "/home/file",
+   					 "gid": 0,
+   					 "group": "root",
+    				 "md5sum": "12d01c32d5e9a921b7a1dbb0a41671fe",
+ 				     "mode": "0640",
+ 				     "owner": "root",
+ 				     "size": 350939,
+    				 "src": "/home/initdude/.ansible/tmp/ansible-tmp-1753305588.7275624-174912-201711779798573/.source.gz",
+				     "state": "file",
+ 				     "uid": 0
 	
-	
+
+3- Managing Packages
+	Command:
+		ansible -i ansible/inventory/inventory.yml -m apt -a "name=net-tools state=present"  ansible_course -b --become-user initdude
+
+	OUTPUT IS : (YELLOW)
+		and it will shown the package is installed
+		note that if you already installed the package, the output is green that means nothing has changed.
+
+4- Users and Groups:
+	Command:
+		 ansible -i inventory/inventory.yml -m user -a 'name=user1 state=present groups=sudo,developers shell=/bin/bash comment="User One" password=<hashed_password>' ansible_course
+
+**		Important Note:
+**			you must used a hashed password in this method, like:
+				python3 -c "import crypt; print(crypt.crypt('SecretPass', crypt.mksalt(crypt.METHOD_SHA512)))"**
+
+
+
+
 	
 
 
