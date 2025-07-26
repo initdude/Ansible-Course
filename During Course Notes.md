@@ -165,7 +165,7 @@ roles/
     templates/
     vars/
 ```
-defaults/
+# defaults/
 
     File: main.yml
 
@@ -173,56 +173,56 @@ defaults/
 
     Note: Lowest variable precedence (can be easily overridden).
 
-# roles/myrole/defaults/main.yml
+### roles/myrole/defaults/main.yml
 some_variable: default_value
 
- files/
+# files/
 
     Content: Static files (e.g. .conf, .tar.gz, scripts).
 
     Used with: copy or unarchive module.
 
-# Copy file to remote
+### Copy file to remote
 - name: Copy NGINX config
   copy:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
 
- handlers/
+# handlers/
 
     File: main.yml
 
     Purpose: Define handlers that are triggered by tasks (e.g. restart services).
 
-# roles/myrole/handlers/main.yml
+### roles/myrole/handlers/main.yml
 - name: restart nginx
   service:
     name: nginx
     state: restarted
 
- tasks/
+# tasks/
 
     File: main.yml (or include other task files)
 
     Purpose: The main list of actions the role performs.
 
-# roles/myrole/tasks/main.yml
+### roles/myrole/tasks/main.yml
 - name: Install NGINX
   apt:
     name: nginx
     state: present
 
- meta/
+# meta/
 
     File: main.yml
 
     Purpose: Role metadata like dependencies, author, license.
 
-# roles/myrole/meta/main.yml
+### roles/myrole/meta/main.yml
 dependencies:
   - role: common
 
- templates/
+# templates/
 
     Content: Jinja2 template files (.j2)
 
@@ -230,25 +230,25 @@ dependencies:
 
     Purpose: Create dynamic config files using variables.
 
-# roles/myrole/templates/nginx.conf.j2
+### roles/myrole/templates/nginx.conf.j2
 server {
   listen 80;
   server_name {{ domain }};
 }
 
-# Apply the template
+### Apply the template
 - name: Deploy NGINX config
   template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
 
- vars/
+# vars/
 
     File: main.yml
 
     Purpose: Define role-specific variables (higher priority than defaults).
 
-# roles/myrole/vars/main.yml
+### roles/myrole/vars/main.yml
 package_name: nginx
 ---
 
