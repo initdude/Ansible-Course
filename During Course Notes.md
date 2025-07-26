@@ -412,3 +412,11 @@ ansible -m setup ansible_course
 ansible -m gather_facts ansible_cource
 ```
 > The output of this command is GREEN and shows all informations of Server (ansible Host)
+
+---
+# Define and Call and Use Place Variables:
+  ### Where:
+  + Variables Defined in a Playbook
+  + Using Variable: About Jinja2
+  + Variables Defined in vars
+  + Variables Defined in 
