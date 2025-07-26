@@ -165,7 +165,91 @@ roles/
     templates/
     vars/
 ```
+defaults/
 
+    File: main.yml
+
+    Purpose: Define default variables for the role.
+
+    Note: Lowest variable precedence (can be easily overridden).
+
+# roles/myrole/defaults/main.yml
+some_variable: default_value
+
+ files/
+
+    Content: Static files (e.g. .conf, .tar.gz, scripts).
+
+    Used with: copy or unarchive module.
+
+# Copy file to remote
+- name: Copy NGINX config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+ handlers/
+
+    File: main.yml
+
+    Purpose: Define handlers that are triggered by tasks (e.g. restart services).
+
+# roles/myrole/handlers/main.yml
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+
+ tasks/
+
+    File: main.yml (or include other task files)
+
+    Purpose: The main list of actions the role performs.
+
+# roles/myrole/tasks/main.yml
+- name: Install NGINX
+  apt:
+    name: nginx
+    state: present
+
+ meta/
+
+    File: main.yml
+
+    Purpose: Role metadata like dependencies, author, license.
+
+# roles/myrole/meta/main.yml
+dependencies:
+  - role: common
+
+ templates/
+
+    Content: Jinja2 template files (.j2)
+
+    Used with: template module
+
+    Purpose: Create dynamic config files using variables.
+
+# roles/myrole/templates/nginx.conf.j2
+server {
+  listen 80;
+  server_name {{ domain }};
+}
+
+# Apply the template
+- name: Deploy NGINX config
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+
+ vars/
+
+    File: main.yml
+
+    Purpose: Define role-specific variables (higher priority than defaults).
+
+# roles/myrole/vars/main.yml
+package_name: nginx
 ---
 
 ## Running Ansible Playbooks
