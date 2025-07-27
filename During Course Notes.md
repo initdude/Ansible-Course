@@ -428,5 +428,28 @@ ansible -m gather_facts ansible_cource
   ### Call:
     {{name}}
 
+### Invalid Variable Names:
+  + mysql version (multiple words)
+  + mysql.port (a dot)
+  + mysql-port(a dash)
 
-    
+### Define ascading (hierarchy) variable and call it
+  ```
+  lotus:
+     env:
+        version:'1.3.3.0'
+        name: 'test'
+  deployment:
+    url: 'http://centdnc.lotus.ir/deployment'
+    username: 'coreuser'
+    password: '123123'
+ ```
+ ### How to call the above variables:
+   ```
+   {{ lotus.env.version }} ### this will call '1.3.3.0'
+   {{ lotus.deployment.password }} ### this will call '123123'
+   ```
+> Note: Dont use TABS in .yml files, use SPACE instead.
+
+
+
