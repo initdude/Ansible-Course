@@ -439,10 +439,10 @@ ansible -m gather_facts ansible_cource
      env:
         version:'1.3.3.0'
         name: 'test'
-  deployment:
-    url: 'http://centdnc.lotus.ir/deployment'
-    username: 'coreuser'
-    password: '123123'
+      deployment
+        url: 'http://centdnc.lotus.ir/deployment'
+        username: 'coreuser'
+        password: '123123'
  ```
  ### How to call the above variables:
    ```
