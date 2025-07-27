@@ -419,4 +419,14 @@ ansible -m gather_facts ansible_cource
   + Variables Defined in a Playbook
   + Using Variable: About Jinja2
   + Variables Defined in vars
-  + Variables Defined in 
+  + Variables Defined in a default
+  + Variables defined in a task
+
+  ### Create:
+    vars:
+      name: blue
+  ### Call:
+    {{name}}
+
+
+    
