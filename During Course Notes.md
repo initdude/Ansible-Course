@@ -451,5 +451,67 @@ ansible -m gather_facts ansible_cource
    ```
 > Note: Dont use TABS in .yml files, use SPACE instead.
 
+---
+
+### call a variables with extra-vars switch (will override all vars in other files, get the vars from commandline)
+```
+ansible -i inventory/inventory.yml --extra-vars playbook.yml
+```
+
+---
+
+# Introduce Ansible Block:
+   + **Task and Handlres and any main.yml files**
+   + **Tags and name any Modules**
+
+ ### an Example to write main.yml (in liner mode)
+
+ ```
+---
+ - name: block description
+   Module_Type: Module Command structure part1=value1 and part2=value2 and ...  **pay attention to = **
+   tags: [TagName_Block_Description]
+```
+> **Each task line, contains 3 part that we call it a block, a block starts with name and end with tag, and the main task is between them**
+
+  ### an Example to write main.yml (in waterfall)
+```
+---
+  - name: Block Description
+    Module_Type:
+       Module Command structure part1: value1
+       Module Command structure part2: value2
+       ...
+       tags: [TageName_Block_Description]
+```
+
+>**Note: according to experience, in liner method we deploy easier.**
+---
+
+# Create Main Stucture:
+  1. mkdir /home/ansible/provision -p
+  2. vim /home/ansible/provision/ProjectName.yml
+  3. mkdir /home/ansible/provision/inventory
+  4. /home/ansible/provision/roles
+
+  ---
+
+  ### How to write groups and Hosts in inventory
+    ```
+    ---
+    [hosts]
+    192.168.1.10
+    192.168.1.11
+    ...
+    [webservers]
+    192.168.10.11
+
+    [db]
+    192.168.11.11
+    ```
+##  *  Note:   **in role we create a subdir by  name of our project that defined in playbook, iside it we create 7 ansible dir, inside them we creat a main.yml for each**
+
+#### ansible structure ss must placed here
+
 
 
