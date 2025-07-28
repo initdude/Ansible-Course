@@ -510,8 +510,8 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
     192.168.11.11
     ```
 ##  *  Note:   **in role we create a subdir by  name of our project that defined in playbook, iside it we create 7 ansible dir, inside them we creat a main.yml for each**
-
-#### ansible structure ss must placed here
+###**here is the tree of ansible dir structure**
+![ansible tree](https://github.com/user-attachments/assets/c196fcd2-b5b3-4366-ab3e-40ff6ae81d34)
 
 
 
