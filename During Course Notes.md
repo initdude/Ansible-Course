@@ -513,5 +513,67 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
 ###**here is the tree of ansible dir structure**
 ![ansible tree](https://github.com/user-attachments/assets/c196fcd2-b5b3-4366-ab3e-40ff6ae81d34)
 
+## we define a playbook for each project, for example if we have a project1, we set like this:
+```
+---
+- hosts: ansible_course
+  roles:
+    - proj(could be anything but be careful this name must be same as the project roles actual dir)
+```
+
+## then we can test it, simply run:
+```
+ansible-playbook -i /inventory/inventory.yml project1.yml
+
+```
+__and here is the output:__
+---
+PLAY [ansible_course] *********************************************************************************************************************************************************
+
+TASK [Gathering Facts] ************************************************************************************************************************************************************
+ok: [192.168.100.11]
+
+PLAY RECAP ***************************************************************************************************************************************************************
+192.168.100.11             : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescu
+
+---
+
+# Note: from Here i call each task we do, by lab.
+### lets continue with creating some simple tasks in our /roles/proj/tasks/main.yml :) 
+### lab1- Create Directory with permissions:
+```
+---
+- name: create directory with specification
+  file: path=/home/testdir1 state=directory owner=root group=root mode=0775
+  tags: [create_dir]
+  ```
+  __RUN: ansible-playbook inventory/inventory.yml project1.yml__
+
+  ## if you check your ansible host(s) you will see at /home you have a "testdir" directory.
+  ---
+
+  ### lab2- Remove Directory :
+  ```
+  --- name: remove dir
+      file: path=/home/testdir state=absent
+      tags: [remove_dir]
+  ```
+  ---
+  ### lab3- Create Recursive Directory:
+  ```
+  ---
+  - name: Create Recursive dir with permissions
+    file: path=/home/testdir1/subdir1/subdir2/subdir3 state=directory recuese=yes owner=root group=root mode=0775
+    tags: [creat_dirs]
+  ```
+---
+### lab-4 Create File:
+```
+---
+- name: create File
+  file: path=/home/testfile1 state=touch owner=root group=root mode=0644 OR  mode="u=rw,g=r,o=r"
+  tags[creat_file]
+  ```
+---
 
 
