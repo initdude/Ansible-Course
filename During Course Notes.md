@@ -688,3 +688,5 @@ tags:
     - create sdir3 for dir2
 ```
 ### we will see the following tree after running playbook:
+
+![ansible treea](https://github.com/user-attachments/assets/98713a57-cc01-4f90-a108-72489228d74e)
