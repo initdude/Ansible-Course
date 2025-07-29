@@ -2,7 +2,11 @@
 
 ---
 
+
 ## DevOps Culture and Fundamentals
+
+DevOps is a cultural and professional movement that focuses on collaboration and communication between software developers and IT operations. Its primary goal is to shorten the development lifecycle and deliver high-quality software continuously. DevOps encourages automation at all stages of software construction, from integration, testing, releasing to deployment and infrastructure management.
+
 
 ### DevOps Layers from Zero
 
@@ -62,7 +66,17 @@ Operations teams blame each other.
 
 ---
 
+
 ## CALMS Model
+
+The CALMS framework is a model that helps organizations adopt DevOps practices successfully. It represents five pillars:
+
+- **Culture**: Building a collaborative environment where all teams share responsibilities and success.
+- **Automation**: Leveraging tools and scripts to automate manual processes, reducing human error and speeding up delivery.
+- **Lean**: Applying lean principles such as reducing waste, optimizing processes, and improving efficiency.
+- **Measurement**: Monitoring key metrics like deployment frequency, lead time, mean time to recovery, and change failure rate.
+- **Sharing**: Promoting open communication and feedback loops between teams to foster knowledge sharing and transparency.
+
 
 * **Culture**: Shared responsibility, embrace change
 * **Automation**: CI/CD, Infrastructure as Code
@@ -123,7 +137,11 @@ After CI/CD jobs: notify developers via **Rocket.Chat** or similar tools
 
 ---
 
+
 # Ansible Introduction
+
+Ansible is an open-source automation tool used for configuration management, application deployment, orchestration, and provisioning. It uses simple YAML syntax (in the form of playbooks) and is agentless, meaning it uses SSH or WinRM to communicate with managed nodes. Ansible is known for its ease of use, strong community support, and flexibility to integrate into CI/CD pipelines.
+
 
 ### Basic Concepts
 
@@ -390,7 +408,7 @@ ansible ansible_course -i inventory/inventory.yml \
 ```bash
 python3 -c "import crypt; print(crypt.crypt('SecretPass', crypt.mksalt(crypt.METHOD_SHA512)))"
 ```
-> suggestion: It's better to use "Ansible Vault" for Sensetive data like password. we will talk aout it in future.
+> suggestion: It's better to use "Ansible Vault" for Sensitive data like password. we will talk about it in future.
 
 ### 5. Deploy from Source Control
 
@@ -409,7 +427,7 @@ ansible -m service -a "name=httpd state=restart" ansible_course
 ```bash
 ansible -m setup ansible_course 
 **OR**
-ansible -m gather_facts ansible_cource
+ansible -m gather_facts ansible_course
 ```
 > The output of this command is GREEN and shows all informations of Server (ansible Host)
 
@@ -461,7 +479,7 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
 ---
 
 # Introduce Ansible Block:
-   + **Task and Handlres and any main.yml files**
+   + **Task and Handlers and any main.yml files**
    + **Tags and name any Modules**
 
  ### an Example to write main.yml (in liner mode)
@@ -482,13 +500,13 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
        Module Command structure part1: value1
        Module Command structure part2: value2
        ...
-       tags: [TageName_Block_Description]
+       tags: [TagName_Block_Description]
 ```
 
 >**Note: according to experience, in liner method we deploy easier.**
 ---
 
-# Create Main Stucture:
+# Create Main Structure:
   1. mkdir /home/ansible/provision -p
   2. vim /home/ansible/provision/ProjectName.yml
   3. mkdir /home/ansible/provision/inventory
@@ -509,7 +527,7 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
     [db]
     192.168.11.11
     ```
-##  *  Note:   **in role we create a subdir by  name of our project that defined in playbook, iside it we create 7 ansible dir, inside them we creat a main.yml for each**
+##  *  Note:   **in role we create a subdir by  name of our project that defined in playbook, inside it we create 7 ansible dir, inside them we create a main.yml for each**
 ###**here is the tree of ansible dir structure**
 ![ansible tree](https://github.com/user-attachments/assets/c196fcd2-b5b3-4366-ab3e-40ff6ae81d34)
 
@@ -534,7 +552,7 @@ TASK [Gathering Facts] *********************************************************
 ok: [192.168.100.11]
 
 PLAY RECAP ***************************************************************************************************************************************************************
-192.168.100.11             : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescu
+192.168.100.11             : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued
 
 ---
 
@@ -543,7 +561,7 @@ PLAY RECAP *********************************************************************
 ### lab1- Create Directory with permissions:
 ```
 ---
-- name: create directory with specification
+- name: Create directory with specifications
   file: path=/home/testdir1 state=directory owner=root group=root mode=0775
   tags: [create_dir]
   ```
@@ -563,17 +581,26 @@ PLAY RECAP *********************************************************************
   ```
   ---
   - name: Create Recursive dir with permissions
-    file: path=/home/testdir1/subdir1/subdir2/subdir3 state=directory recuese=yes owner=root group=root mode=0775
-    tags: [creat_dirs]
+    file: path=/home/testdir1/subdir1/subdir2/subdir3 state=directory recurse=yes owner=root group=root mode=0775
+    tags: [create_dirs]
   ```
 ---
 ### lab-4 Create File:
 ```
 ---
-- name: create File
-  file: path=/home/testfile1 state=touch owner=root group=root mode=0644 OR  mode="u=rw,g=r,o=r"
-  tags[creat_file]
+- name: Create File
+  file: path=/home/testfile1 state=touch owner=root group=root mode=0644 mode: "u=rw,g=r,o=r"
+  tags[create_file]
   ```
 ---
-
-
+### lab-5 Delete File:
+```
+---
+- name: Delete File
+ansible.builtin.file:
+  path: /home/testfile1
+  state: absent
+tags:
+  - Delete File
+```
+---
