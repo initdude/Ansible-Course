@@ -619,7 +619,7 @@ tags:
 # Project:
 ## Create Directories and files and test it with tree
 ### in this project We want to get more hands-on with Ansible scripting
-```
+```yaml
 - name: create directory and files for new project
   ansible.builtin.file:
     path: "/opt/maindir/{{ item | trim }}"
