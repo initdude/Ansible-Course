@@ -572,7 +572,8 @@ PLAY RECAP *********************************************************************
 
   ### lab2- Remove Directory :
   ```yml
-  --- name: remove dir
+  ---
+  - name: remove dir
       file: path=/home/testdir state=absent
       tags: [remove_dir]
   ```
@@ -607,6 +608,7 @@ tags:
 # Introduction Ansible Modules for Windows Machines"
 ### lab-6 Create File
 ```yml
+---
 - name: Create a file on Windows
   tasks:
     - name: Create empty file
@@ -620,6 +622,7 @@ tags:
 ## Create Directories and files and test it with tree
 ### in this project We want to get more hands-on with Ansible scripting
 ```yaml
+---
 - name: create directory and files for new project
   ansible.builtin.file:
     path: "/opt/maindir/{{ item | trim }}"
