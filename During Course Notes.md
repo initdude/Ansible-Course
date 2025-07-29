@@ -484,7 +484,7 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
 
  ### an Example to write main.yml (in liner mode)
 
- ```
+ ```yml
 ---
  - name: block description
    Module_Type: Module Command structure part1=value1 and part2=value2 and ...  **pay attention to = **
@@ -493,7 +493,7 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
 > **Each task line, contains 3 part that we call it a block, a block starts with name and end with tag, and the main task is between them**
 
   ### an Example to write main.yml (in waterfall)
-```
+```yml
 ---
   - name: Block Description
     Module_Type:
@@ -515,7 +515,7 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
   ---
 
   ### How to write groups and Hosts in inventory
-    ```
+    ```yml
     ---
     [hosts]
     192.168.1.10
@@ -532,7 +532,7 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
 ![ansible tree](https://github.com/user-attachments/assets/c196fcd2-b5b3-4366-ab3e-40ff6ae81d34)
 
 ## we define a playbook for each project, for example if we have a project1, we set like this:
-```
+```yml
 ---
 - hosts: ansible_course
   roles:
@@ -559,7 +559,7 @@ PLAY RECAP *********************************************************************
 # Note: from Here i call each task we do, by lab.
 ### lets continue with creating some simple tasks in our /roles/proj/tasks/main.yml :) 
 ### lab1- Create Directory with permissions:
-```
+```yml
 ---
 - name: Create directory with specifications
   file: path=/home/testdir1 state=directory owner=root group=root mode=0775
@@ -571,14 +571,14 @@ PLAY RECAP *********************************************************************
   ---
 
   ### lab2- Remove Directory :
-  ```
+  ```yml
   --- name: remove dir
       file: path=/home/testdir state=absent
       tags: [remove_dir]
   ```
   ---
   ### lab3- Create Recursive Directory:
-  ```
+  ```yml
   ---
   - name: Create Recursive dir with permissions
     file: path=/home/testdir1/subdir1/subdir2/subdir3 state=directory recurse=yes owner=root group=root mode=0775
@@ -586,7 +586,7 @@ PLAY RECAP *********************************************************************
   ```
 ---
 ### lab-4 Create File:
-```
+```yml
 ---
 - name: Create File
   file: path=/home/testfile1 state=touch owner=root group=root mode=0644 mode: "u=rw,g=r,o=r"
@@ -594,7 +594,7 @@ PLAY RECAP *********************************************************************
   ```
 ---
 ### lab-5 Delete File:
-```
+```yml
 ---
 - name: Delete File
 ansible.builtin.file:
@@ -606,7 +606,7 @@ tags:
 ---
 # Introduction Ansible Modules for Windows Machines"
 ### lab-6 Create File
-```
+```yml
 - name: Create a file on Windows
   tasks:
     - name: Create empty file
