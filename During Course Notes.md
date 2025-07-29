@@ -604,3 +604,13 @@ tags:
   - Delete File
 ```
 ---
+# Introduction Ansible Modules for Windows Machines"
+### lab-6 Create File
+```
+- name: Create a file on Windows
+  tasks:
+    - name: Create empty file
+      community.windows.win_file:
+        path: C:\temp\foo.conf
+        state: touch
+```
