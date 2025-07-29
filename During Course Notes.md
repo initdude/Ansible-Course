@@ -614,3 +614,74 @@ tags:
         path: C:\temp\foo.conf
         state: touch
 ```
+---
+
+# Project:
+## Create Directories and files and test it with tree
+### in this project We want to get more hands-on with Ansible scripting
+```
+- name: create directory and files for new project
+  ansible.builtin.file:
+    path: "/opt/maindir/{{ item | trim }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "dir1"
+    - "dir2"
+    - "dir3"
+  tags:
+    - create_dirs
+
+- name: create files for dir1
+  ansible.builtin.file:
+    path: "/opt/maindir/dir1/{{ item }} "
+    state: touch
+    mode: "0644"
+  loop:
+    - file1
+    - file2
+  tags:
+    - create files dir1
+
+
+- name: create subdir for dir2
+  ansible.builtin.file:
+    path: /opt/maindir/dir2/sdir1
+    state: directory
+    mode: "0755"
+  tags:
+    - create subdir dir2
+
+- name: create file for dir2_1
+  ansible.builtin.file:
+    path: /opt/maindir/dir2/sdir1/file3
+    state: touch
+    mode: "0644"
+  tags:
+    - create file
+- name: create sdir in sdir1
+  ansible.builtin.file:
+    path: /opt/maindir/dir2/sdir1/sdir2
+    state: directory
+    mode: "0755"
+  tags:
+    - create sdir sdir2
+- name: create hiddn file in sdir2
+  ansible.builtin.file:
+    path: "/opt/maindir/dir2/sdir1/sdir2/{{ item }}"
+    state: touch
+    mode: "0644"
+  loop:
+    - .file1
+    - .file2
+  tags:
+    - create hidden files
+- name: create sdir3 in dir2
+  ansible.builtin.file:
+    path: /opt/maindir/dir2/sdir1/sdir2/sdir3
+    state: directory
+    mode: "0755"
+  tags:
+    - create sdir3 for dir2
+```
+### we will see the following tree after running playbook:
