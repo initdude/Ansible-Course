@@ -709,3 +709,17 @@ tags:
   - copy j2 file
 ```
 ---
+### Note: if yoy need to Restart for confif files:
+   + nitify: restart[service]
+### example:
+```yml
+---
+- name: copy httpd.conf to /etc/httpd/conf/httpd.conf
+temlpate:
+  src: httpd.cinf.j2
+  dest: /rtc/httpd/conf/httpd.conf
+  notify: Restart httpd # this will execute after change happens.
+tags:
+  - httpd
+```
+---
