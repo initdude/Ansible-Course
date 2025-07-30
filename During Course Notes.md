@@ -710,7 +710,7 @@ tags:
 ```
 ---
 ### Note: if yoy need to Restart for confif files:
-   + nitify: restart[service]
+   + notify: restart[service]
 ### example:
 ```yml
 ---
@@ -723,3 +723,26 @@ tags:
   - httpd
 ```
 ---
+### lab-8 Create config file and copy from template Directory with backup
+
++ md5sum /hom ansible/provisioner/roles/proj/templaes/test.conf.j2
++ edit /home/ansible/provision/roles/proj/templates/test.conf.j2
++ md5sum /hom ansible/provisioner/roles/proj/templaes/test.conf.j2
++ vim /home/ansible/provision/roles/proj/tasks/main.yml
+    ```yml
+   ---
+    - name: create testdir1 in home
+  ansible.builtin.file:
+    path: /home/testdir1
+    state: directory
+  tags:
+    - create testdir1
+  - name: copy test.conf to /home/testdir
+   template:
+     src: test.conf.j2
+     dest: /home/testdir1/test.conf
+     backup: yes # this will create a backup from the file before change. with revision number and date in name
+  tags:
+    - copy_config_file
+  
+```---
