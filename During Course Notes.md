@@ -690,3 +690,22 @@ tags:
 ### we will see the following tree after running playbook:
 
 ![ansible treea](https://github.com/user-attachments/assets/98713a57-cc01-4f90-a108-72489228d74e)
+
+
+### lab-7 Create Config File Copy From Template Directory:
+1- Create and copy my.conf.j2 file to /home/ansible/provison/roles/proj/templates
+> all files in this dir must be in .j2 format, like: nginx.conf.j2
+   ```bash
+echo hiii > /home/ansible/provision/roles/proj/templates/test.conf.j2
+```
+### after creating the file we must write a task in tasks/main.yml
+``` yml
+---
+- name: copy config_file.conf.j2 to destination
+template:
+  src: test.conf.j2
+  des: /opt/test.conf
+tags:
+  - copy j2 file
+```
+---
