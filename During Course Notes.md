@@ -729,7 +729,7 @@ tags:
 + edit /home/ansible/provision/roles/proj/templates/test.conf.j2
 + md5sum /hom ansible/provisioner/roles/proj/templaes/test.conf.j2
 + vim /home/ansible/provision/roles/proj/tasks/main.yml
-    ```yml
+    ``` yml
    ---
     - name: create testdir1 in home
   ansible.builtin.file:
@@ -745,4 +745,23 @@ tags:
   tags:
     - copy_config_file
   
-```---
+   ```
+
+
+---
+### lab-10
+__ create and copy file1.tar.gz file to /home/ansible/provision/roles/proj/file1.tar.gz __
+```bash
+fallocate -l 100MB /home/ansible/provision/roles/proj/file1
+tar -czvf file1.tar.gz /path/to/file1
+```
+### in tasks we add this task
+```yml
+- name: copy myfile.tar.gz to /tmp
+  ansible.builtin.copy:
+    src: file1.tar.gz
+    dest: /tmp
+  tags:
+    - copy_gz_file
+```
+---
