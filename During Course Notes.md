@@ -709,7 +709,7 @@ tags:
   - copy j2 file
 ```
 ---
-### Note: if yoy need to Restart for confif files:
+### Note: if you need to Restart for confif files:
    + notify: restart[service]
 ### example:
 ```yml
@@ -749,14 +749,14 @@ tags:
 
 
 ---
-### lab-10
-__ create and copy file1.tar.gz file to /home/ansible/provision/roles/proj/file1.tar.gz __
+### lab-9 create and copy file1.tar.gz file to /home/ansible/provision/roles/proj/file1.tar.gz:
 ```bash
 fallocate -l 100MB /home/ansible/provision/roles/proj/file1
 tar -czvf file1.tar.gz /path/to/file1
 ```
 ### in tasks we add this task
 ```yml
+---
 - name: copy myfile.tar.gz to /tmp
   ansible.builtin.copy:
     src: file1.tar.gz
@@ -765,3 +765,35 @@ tar -czvf file1.tar.gz /path/to/file1
     - copy_gz_file
 ```
 ---
+### lab-10 Download File From URL:
+```yml
+- name: get file from URL
+  ansible.builtin.get_url:
+    url: http://example.com/path/file
+    dest: /opt
+    mode: "0440"
+  tags:
+    - dwonload form url
+```
+---
+### lab-11 Unzip File in ansible Host and copy unarchivedd file to hosts:
+```yml
+- name: unzip file on ansible host and copy it to host
+  ansible.builtin.unarchive:
+    src: /opt/file1.tar.gz
+    dest: /opt
+  tags:
+    - unzip_copy
+```
+---
+### lab-12 Extract a tarball in hosts with ansible (source and destination are in hosts)
+``` yml
+---
+- name: extract in host tarball to host
+  ansible.builtin.unarchive:
+     src: /home/file1.tar.gz #host /home dir
+     dest: /opt #host /opt
+
+      
+
+
