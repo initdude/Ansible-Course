@@ -794,6 +794,60 @@ tar -czvf file1.tar.gz /path/to/file1
      src: /home/file1.tar.gz #host /home dir
      dest: /opt #host /opt
 
-      
+# Project:
+```yml
+---
+- name: create dir config in etc
+  ansible.builtin.file:
+    path: /etc/config/
+    state: directory
+    mode: "0644"
+  tags:
+    - create config
+- name: create dir config.d in config
+  ansible.builtin.file:
+    path: /etc/config/config.d/
+    state: directory
+    mode: "0644"
+  tags:
+    - create config.d
+- name: copy stp.conf from ansible to config.d dir
+  ansible.builtin.template:
+    src: stp.conf.j2
+    dest: /etc/config/config.d/stp.conf
+    backup: yes
+  tags:
+    - copy stp to host
+- name: copy .my.stp to host /config
+  ansible.builtin.copy:
+    src: .my.stp.file
+    dest: /etc/config/
+    backup: yes
+  tags:
+    - copy hidden file to host
+- name: create /apps in hosts home
+  ansible.builtin.file:
+    path: /home/apps/
+    state: directory
+    mode: "0644"
+  tags: create appdir
+- name: copy and rename archive to app
+  ansible.builtin.copy:
+    src: file.tar.gz
+    dest: /home/apps/source.tar.gz
+  tags:
+    - copy archive file
+- name: unarchive tarball to host
+  ansible.builtin.unarchive:
+    src: file.tar.gz
+    dest: /home/apps
+    remote_src: no # means the archive is on the control machine (your Ansible project), not already on the target host
+  tags:
+    - unarchive tarball
+```
+> check and find whats happen after running the playbook.
+
+---
+
 
 
