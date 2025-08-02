@@ -558,7 +558,7 @@ PLAY RECAP *********************************************************************
 
 # Note: from Here i call each task we do, by lab.
 ### lets continue with creating some simple tasks in our /roles/proj/tasks/main.yml :) 
-### lab1- Create Directory with permissions:
+### LAB1- Create Directory with permissions:
 ```yml
 ---
 - name: Create directory with specifications
@@ -570,7 +570,7 @@ PLAY RECAP *********************************************************************
   ## if you check your ansible host(s) you will see at /home you have a "testdir" directory.
   ---
 
-  ### lab2- Remove Directory :
+  ### LAB2- Remove Directory :
   ```yml
   ---
   - name: remove dir
@@ -578,7 +578,7 @@ PLAY RECAP *********************************************************************
       tags: [remove_dir]
   ```
   ---
-  ### lab3- Create Recursive Directory:
+  ### LAB3- Create Recursive Directory:
   ```yml
   ---
   - name: Create Recursive dir with permissions
@@ -586,7 +586,7 @@ PLAY RECAP *********************************************************************
     tags: [create_dirs]
   ```
 ---
-### lab-4 Create File:
+### LAB-4 Create File:
 ```yml
 ---
 - name: Create File
@@ -594,7 +594,7 @@ PLAY RECAP *********************************************************************
   tags[create_file]
   ```
 ---
-### lab-5 Delete File:
+### LAB-5 Delete File:
 ```yml
 ---
 - name: Delete File
@@ -606,7 +606,7 @@ tags:
 ```
 ---
 # Introduction Ansible Modules for Windows Machines"
-### lab-6 Create File
+### LAB-6 Create File
 ```yml
 ---
 - name: Create a file on Windows
@@ -692,7 +692,7 @@ tags:
 ![ansible treea](https://github.com/user-attachments/assets/98713a57-cc01-4f90-a108-72489228d74e)
 
 
-### lab-7 Create Config File Copy From Template Directory:
+### LAB-7 Create Config File Copy From Template Directory:
 1- Create and copy my.conf.j2 file to /home/ansible/provison/roles/proj/templates
 > all files in this dir must be in .j2 format, like: nginx.conf.j2
    ```bash
@@ -723,7 +723,7 @@ tags:
   - httpd
 ```
 ---
-### lab-8 Create config file and copy from template Directory with backup
+### LAB-8 Create config file and copy from template Directory with backup
 
 + md5sum /hom ansible/provisioner/roles/proj/templaes/test.conf.j2
 + edit /home/ansible/provision/roles/proj/templates/test.conf.j2
@@ -749,7 +749,7 @@ tags:
 
 
 ---
-### lab-9 create and copy file1.tar.gz file to /home/ansible/provision/roles/proj/file1.tar.gz:
+### LAB-9 create and copy file1.tar.gz file to /home/ansible/provision/roles/proj/file1.tar.gz:
 ```bash
 fallocate -l 100MB /home/ansible/provision/roles/proj/file1
 tar -czvf file1.tar.gz /path/to/file1
@@ -776,7 +776,7 @@ tar -czvf file1.tar.gz /path/to/file1
     - dwonload form url
 ```
 ---
-### lab-11 Unzip File in ansible Host and copy unarchivedd file to hosts:
+### LAB-11 Unzip File in ansible Host and copy unarchivedd file to hosts:
 ```yml
 - name: unzip file on ansible host and copy it to host
   ansible.builtin.unarchive:
@@ -786,7 +786,7 @@ tar -czvf file1.tar.gz /path/to/file1
     - unzip_copy
 ```
 ---
-### lab-12 Extract a tarball in hosts with ansible (source and destination are in hosts)
+### LAB-12 Extract a tarball in hosts with ansible (source and destination are in hosts)
 ``` yml
 ---
 - name: extract in host tarball to host
@@ -849,6 +849,50 @@ tar -czvf file1.tar.gz /path/to/file1
 > check and find whats happen after running the playbook.
 
 ---
+### LAB-13 Create users and groups:
+```yml
+---
+- name: create test group
+  ansible.builtin.group:
+    name: test
+    state: present
+  tags:
+    - group
+
+- name: create user
+  ansible.builtin.user:
+    name: test
+    state: present
+    comment: "test"
+    group: test
+  tags:
+    - user
+```
+
+---
+
+### LAB-14 delete users and groups:
+
+```yml
+---
+- name: delete group
+  ansible.builtin.group:
+    name: test
+    state: absent
+  tags:
+    - groupdel
 
 
-
+- name: delete user
+  ansible.builtin.user:
+    name: test
+    comment: "test"
+    state: absent
+    group: test
+  tags:
+    userdel
+```
+> note: RUN > ansible-playbook -i inventory/inventory.yml project.yml --tags=userdel 
+> nsible-playbook -i inventory/inventory.yml project.yml --tags=groupdel
+            
+---
