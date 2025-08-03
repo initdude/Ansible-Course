@@ -892,7 +892,38 @@ tar -czvf file1.tar.gz /path/to/file1
   tags:
     userdel
 ```
-> note: RUN > ansible-playbook -i inventory/inventory.yml project.yml --tags=userdel 
-> nsible-playbook -i inventory/inventory.yml project.yml --tags=groupdel
+> note: RUN > ansible-playbook -i inventory/inventory.yml project.yml --tags=userdel and then
+> ansible-playbook -i inventory/inventory.yml project.yml --tags=groupdel
             
 ---
+LAB-15 Install and Removing Packages:
+```yml
+---
+- name: install nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+  tags:
+    - install_nginx
+
+- name: install a list of packages
+  ansible.builtin.apt:
+    pkg:
+    - net-tools
+    - lynx
+    - cmatrix
+
+  tags:
+    - nelyma
+
+
+
+- name: remove a package
+  ansible.builtin.apt:
+    name: cmatrix
+    state: absent
+  tags:
+    - rmv_matrix
+```
+---
+
