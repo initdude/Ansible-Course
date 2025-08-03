@@ -905,19 +905,14 @@ LAB-15 Install and Removing Packages:
     state: present
   tags:
     - install_nginx
-
 - name: install a list of packages
   ansible.builtin.apt:
     pkg:
     - net-tools
     - lynx
     - cmatrix
-
   tags:
     - nelyma
-
-
-
 - name: remove a package
   ansible.builtin.apt:
     name: cmatrix
@@ -925,5 +920,24 @@ LAB-15 Install and Removing Packages:
   tags:
     - rmv_matrix
 ```
+> Note: we have diffrent modules for each distro package management. find it in ansible docs.
 ---
-
+LAB-16 Install Multiple Packages using loop
+```yml
+---
+- name: install multipak with loop
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - net-tools
+    - curl
+    - htop
+  tags:
+    - loop
+```
+---
+LAB-17 Using Loop (loop allows you to execute a single task repeatedly over a list of items, enabling efficient, DRY (Don't Repeat Yourself) automation within playbooks.")
+```yml
+---
+- 
