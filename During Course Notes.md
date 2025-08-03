@@ -2,11 +2,9 @@
 
 ---
 
-
 ## DevOps Culture and Fundamentals
 
 DevOps is a cultural and professional movement that focuses on collaboration and communication between software developers and IT operations. Its primary goal is to shorten the development lifecycle and deliver high-quality software continuously. DevOps encourages automation at all stages of software construction, from integration, testing, releasing to deployment and infrastructure management.
-
 
 ### DevOps Layers from Zero
 
@@ -30,7 +28,7 @@ From NOC Level 3 (just watching monitors) → NOC Level 2 → Admin → DevOps.
 
 * Ceph, Rook-Ceph, Minio ≠ NFS or traditional methods
 
-### Note:
+### Note
 
 Don't name the team "DevOps" first. Do the task first, then name it. DevOps spans:
 
@@ -44,17 +42,17 @@ Don't name the team "DevOps" first. Do the task first, then name it. DevOps span
 
 ### Goal of DevOps: Deliver changes ASAP to customers
 
-#### Problem:
+#### Problem
 
 Operations teams blame each other.
 
-#### Solution:
+#### Solution
 
 1. Collaboration
 2. Remove the wall between dev and ops
 3. Use DevOps tools
 
-#### Benefits:
+#### Benefits
 
 * Faster troubleshooting (monitoring, TPS, uptime)
 * Isolated environments (containers)
@@ -66,17 +64,15 @@ Operations teams blame each other.
 
 ---
 
-
 ## CALMS Model
 
 The CALMS framework is a model that helps organizations adopt DevOps practices successfully. It represents five pillars:
 
-- **Culture**: Building a collaborative environment where all teams share responsibilities and success.
-- **Automation**: Leveraging tools and scripts to automate manual processes, reducing human error and speeding up delivery.
-- **Lean**: Applying lean principles such as reducing waste, optimizing processes, and improving efficiency.
-- **Measurement**: Monitoring key metrics like deployment frequency, lead time, mean time to recovery, and change failure rate.
-- **Sharing**: Promoting open communication and feedback loops between teams to foster knowledge sharing and transparency.
-
+* **Culture**: Building a collaborative environment where all teams share responsibilities and success.
+* **Automation**: Leveraging tools and scripts to automate manual processes, reducing human error and speeding up delivery.
+* **Lean**: Applying lean principles such as reducing waste, optimizing processes, and improving efficiency.
+* **Measurement**: Monitoring key metrics like deployment frequency, lead time, mean time to recovery, and change failure rate.
+* **Sharing**: Promoting open communication and feedback loops between teams to foster knowledge sharing and transparency.
 
 * **Culture**: Shared responsibility, embrace change
 * **Automation**: CI/CD, Infrastructure as Code
@@ -137,11 +133,9 @@ After CI/CD jobs: notify developers via **Rocket.Chat** or similar tools
 
 ---
 
-
 # Ansible Introduction
 
 Ansible is an open-source automation tool used for configuration management, application deployment, orchestration, and provisioning. It uses simple YAML syntax (in the form of playbooks) and is agentless, meaning it uses SSH or WinRM to communicate with managed nodes. Ansible is known for its ease of use, strong community support, and flexibility to integrate into CI/CD pipelines.
-
 
 ### Basic Concepts
 
@@ -183,6 +177,7 @@ roles/
     templates/
     vars/
 ```
+
 # defaults/
 
     File: main.yml
@@ -192,6 +187,7 @@ roles/
     Note: Lowest variable precedence (can be easily overridden).
 
 ### roles/myrole/defaults/main.yml
+
 some_variable: default_value
 
 # files/
@@ -201,7 +197,8 @@ some_variable: default_value
     Used with: copy or unarchive module.
 
 ### Copy file to remote
-- name: Copy NGINX config
+
+* name: Copy NGINX config
   copy:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
@@ -213,7 +210,8 @@ some_variable: default_value
     Purpose: Define handlers that are triggered by tasks (e.g. restart services).
 
 ### roles/myrole/handlers/main.yml
-- name: restart nginx
+
+* name: restart nginx
   service:
     name: nginx
     state: restarted
@@ -225,7 +223,8 @@ some_variable: default_value
     Purpose: The main list of actions the role performs.
 
 ### roles/myrole/tasks/main.yml
-- name: Install NGINX
+
+* name: Install NGINX
   apt:
     name: nginx
     state: present
@@ -237,8 +236,10 @@ some_variable: default_value
     Purpose: Role metadata like dependencies, author, license.
 
 ### roles/myrole/meta/main.yml
+
 dependencies:
-  - role: common
+
+* role: common
 
 # templates/
 
@@ -249,13 +250,15 @@ dependencies:
     Purpose: Create dynamic config files using variables.
 
 ### roles/myrole/templates/nginx.conf.j2
+
 server {
   listen 80;
   server_name {{ domain }};
 }
 
 ### Apply the template
-- name: Deploy NGINX config
+
+* name: Deploy NGINX config
   template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
@@ -267,6 +270,7 @@ server {
     Purpose: Define role-specific variables (higher priority than defaults).
 
 ### roles/myrole/vars/main.yml
+
 package_name: nginx
 ---
 
@@ -276,7 +280,7 @@ package_name: nginx
 ansible-playbook -i inventory/inventory.yml playbook.yml [options]
 ```
 
-### Common Switches:
+### Common Switches
 
 * `-v`, `-vv`, `-vvv`: Verbosity levels
 * `--tags tag1,tag2`: Run specific tags
@@ -408,6 +412,7 @@ ansible ansible_course -i inventory/inventory.yml \
 ```bash
 python3 -c "import crypt; print(crypt.crypt('SecretPass', crypt.mksalt(crypt.METHOD_SHA512)))"
 ```
+
 > suggestion: It's better to use "Ansible Vault" for Sensitive data like password. we will talk about it in future.
 
 ### 5. Deploy from Source Control
@@ -415,12 +420,15 @@ python3 -c "import crypt; print(crypt.crypt('SecretPass', crypt.mksalt(crypt.MET
 ```bash
 ansible -m git -a "repo=github.com/repo.git dest=/srv/myapp" ansible_course
 ```
+
 ### 6. Managing Services
 
 ```bash
 ansible -m service -a "name=httpd state=restart" ansible_course
 ```
+
 ### 7. Gathering Facts
+  >
   > Gather Facts Modules:
        _ This module takes care of executing the configured facts modules. The default is to use the **setup** module.
   
@@ -429,29 +437,38 @@ ansible -m setup ansible_course
 **OR**
 ansible -m gather_facts ansible_course
 ```
+
 > The output of this command is GREEN and shows all informations of Server (ansible Host)
 
 ---
-# Define and Call and Use Place Variables:
-  ### Where:
-  + Variables Defined in a Playbook
-  + Using Variable: About Jinja2
-  + Variables Defined in vars
-  + Variables Defined in a default
-  + Variables defined in a task
 
-  ### Create:
+# Define and Call and Use Place Variables
+
+### Where
+
+* Variables Defined in a Playbook
+* Using Variable: About Jinja2
+* Variables Defined in vars
+* Variables Defined in a default
+* Variables defined in a task
+
+### Create
+
     vars:
       name: blue
-  ### Call:
+
+### Call
+
     {{name}}
 
-### Invalid Variable Names:
-  + mysql version (multiple words)
-  + mysql.port (a dot)
-  + mysql-port(a dash)
+### Invalid Variable Names
+
+* mysql version (multiple words)
+* mysql.port (a dot)
+* mysql-port(a dash)
 
 ### Define ascading (hierarchy) variable and call it
+
   ```
   lotus:
      env:
@@ -462,27 +479,32 @@ ansible -m gather_facts ansible_course
         username: 'coreuser'
         password: '123123'
  ```
- ### How to call the above variables:
+
+### How to call the above variables
+
    ```
    {{ lotus.env.version }} ### this will call '1.3.3.0'
    {{ lotus.deployment.password }} ### this will call '123123'
    ```
+
 > Note: Dont use TABS in .yml files, use SPACE instead.
 
 ---
 
 ### call a variables with extra-vars switch (will override all vars in other files, get the vars from commandline)
+
 ```
 ansible -i inventory/inventory.yml --extra-vars playbook.yml
 ```
 
 ---
 
-# Introduce Ansible Block:
-   + **Task and Handlers and any main.yml files**
-   + **Tags and name any Modules**
+# Introduce Ansible Block
 
- ### an Example to write main.yml (in liner mode)
+* **Task and Handlers and any main.yml files**
+* **Tags and name any Modules**
+
+### an Example to write main.yml (in liner mode)
 
  ```yml
 ---
@@ -490,9 +512,11 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
    Module_Type: Module Command structure part1=value1 and part2=value2 and ...  **pay attention to = **
    tags: [TagName_Block_Description]
 ```
+
 > **Each task line, contains 3 part that we call it a block, a block starts with name and end with tag, and the main task is between them**
 
-  ### an Example to write main.yml (in waterfall)
+### an Example to write main.yml (in waterfall)
+
 ```yml
 ---
   - name: Block Description
@@ -506,7 +530,8 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
 >**Note: according to experience, in liner method we deploy easier.**
 ---
 
-# Create Main Structure:
+# Create Main Structure
+
   1. mkdir /home/ansible/provision -p
   2. vim /home/ansible/provision/ProjectName.yml
   3. mkdir /home/ansible/provision/inventory
@@ -514,7 +539,8 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
 
   ---
 
-  ### How to write groups and Hosts in inventory
+### How to write groups and Hosts in inventory
+
     ```yml
     ---
     [hosts]
@@ -527,11 +553,15 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
     [db]
     192.168.11.11
     ```
-##  *  Note:   **in role we create a subdir by  name of our project that defined in playbook, inside it we create 7 ansible dir, inside them we create a main.yml for each**
-###**here is the tree of ansible dir structure**
+
+## *  Note:   **in role we create a subdir by  name of our project that defined in playbook, inside it we create 7 ansible dir, inside them we create a main.yml for each**
+
+### **here is the tree of ansible dir structure**
+
 ![ansible tree](https://github.com/user-attachments/assets/c196fcd2-b5b3-4366-ab3e-40ff6ae81d34)
 
-## we define a playbook for each project, for example if we have a project1, we set like this:
+## we define a playbook for each project, for example if we have a project1, we set like this
+
 ```yml
 ---
 - hosts: ansible_course
@@ -539,13 +569,16 @@ ansible -i inventory/inventory.yml --extra-vars playbook.yml
     - proj(could be anything but be careful this name must be same as the project roles actual dir)
 ```
 
-## then we can test it, simply run:
+## then we can test it, simply run
+
 ```
 ansible-playbook -i /inventory/inventory.yml project1.yml
 
 ```
-__and here is the output:__
+
+**and here is the output:**
 ---
+
 PLAY [ansible_course] *********************************************************************************************************************************************************
 
 TASK [Gathering Facts] ************************************************************************************************************************************************************
@@ -556,45 +589,60 @@ PLAY RECAP *********************************************************************
 
 ---
 
-# Note: from Here i call each task we do, by lab.
-### lets continue with creating some simple tasks in our /roles/proj/tasks/main.yml :) 
-### LAB1- Create Directory with permissions:
+# Note: from Here i call each task we do, by lab
+
+### lets continue with creating some simple tasks in our /roles/proj/tasks/main.yml :)
+
+### LAB1- Create Directory with permissions
+
 ```yml
 ---
 - name: Create directory with specifications
   file: path=/home/testdir1 state=directory owner=root group=root mode=0775
   tags: [create_dir]
   ```
-  __RUN: ansible-playbook inventory/inventory.yml project1.yml__
 
-  ## if you check your ansible host(s) you will see at /home you have a "testdir" directory.
+  **RUN: ansible-playbook inventory/inventory.yml project1.yml**
+
+## if you check your ansible host(s) you will see at /home you have a "testdir" directory
+
   ---
 
-  ### LAB2- Remove Directory :
+### LAB2- Remove Directory
+
   ```yml
   ---
   - name: remove dir
       file: path=/home/testdir state=absent
       tags: [remove_dir]
   ```
+
   ---
-  ### LAB3- Create Recursive Directory:
+
+### LAB3- Create Recursive Directory
+
   ```yml
   ---
   - name: Create Recursive dir with permissions
     file: path=/home/testdir1/subdir1/subdir2/subdir3 state=directory recurse=yes owner=root group=root mode=0775
     tags: [create_dirs]
   ```
+
 ---
-### LAB-4 Create File:
+
+### LAB-4 Create File
+
 ```yml
 ---
 - name: Create File
   file: path=/home/testfile1 state=touch owner=root group=root mode=0644 mode: "u=rw,g=r,o=r"
   tags[create_file]
   ```
+
 ---
-### LAB-5 Delete File:
+
+### LAB-5 Delete File
+
 ```yml
 ---
 - name: Delete File
@@ -604,9 +652,13 @@ ansible.builtin.file:
 tags:
   - Delete File
 ```
+
 ---
+
 # Introduction Ansible Modules for Windows Machines"
+
 ### LAB-6 Create File
+
 ```yml
 ---
 - name: Create a file on Windows
@@ -616,11 +668,15 @@ tags:
         path: C:\temp\foo.conf
         state: touch
 ```
+
 ---
 
-# Project:
+# Project
+
 ## Create Directories and files and test it with tree
+
 ### in this project We want to get more hands-on with Ansible scripting
+
 ```yaml
 ---
 - name: create directory and files for new project
@@ -687,18 +743,22 @@ tags:
   tags:
     - create sdir3 for dir2
 ```
-### we will see the following tree after running playbook:
+
+### we will see the following tree after running playbook
 
 ![ansible treea](https://github.com/user-attachments/assets/98713a57-cc01-4f90-a108-72489228d74e)
 
+### LAB-7 Create Config File Copy From Template Directory
 
-### LAB-7 Create Config File Copy From Template Directory:
 1- Create and copy my.conf.j2 file to /home/ansible/provison/roles/proj/templates
 > all files in this dir must be in .j2 format, like: nginx.conf.j2
+
    ```bash
 echo hiii > /home/ansible/provision/roles/proj/templates/test.conf.j2
 ```
+
 ### after creating the file we must write a task in tasks/main.yml
+
 ``` yml
 ---
 - name: copy config_file.conf.j2 to destination
@@ -708,10 +768,15 @@ template:
 tags:
   - copy j2 file
 ```
+
 ---
-### Note: if you need to Restart for confif files:
-   + notify: restart[service]
-### example:
+
+### Note: if you need to Restart for confif files
+
+* notify: restart[service]
+
+### example
+
 ```yml
 ---
 - name: copy httpd.conf to /etc/httpd/conf/httpd.conf
@@ -722,13 +787,16 @@ temlpate:
 tags:
   - httpd
 ```
+
 ---
+
 ### LAB-8 Create config file and copy from template Directory with backup
 
-+ md5sum /hom ansible/provisioner/roles/proj/templaes/test.conf.j2
-+ edit /home/ansible/provision/roles/proj/templates/test.conf.j2
-+ md5sum /hom ansible/provisioner/roles/proj/templaes/test.conf.j2
-+ vim /home/ansible/provision/roles/proj/tasks/main.yml
+* md5sum /hom ansible/provisioner/roles/proj/templaes/test.conf.j2
+* edit /home/ansible/provision/roles/proj/templates/test.conf.j2
+* md5sum /hom ansible/provisioner/roles/proj/templaes/test.conf.j2
+* vim /home/ansible/provision/roles/proj/tasks/main.yml
+
     ``` yml
    ---
     - name: create testdir1 in home
@@ -747,14 +815,17 @@ tags:
   
    ```
 
-
 ---
-### LAB-9 create and copy file1.tar.gz file to /home/ansible/provision/roles/proj/file1.tar.gz:
+
+### LAB-9 create and copy file1.tar.gz file to /home/ansible/provision/roles/proj/file1.tar.gz
+
 ```bash
 fallocate -l 100MB /home/ansible/provision/roles/proj/file1
 tar -czvf file1.tar.gz /path/to/file1
 ```
+
 ### in tasks we add this task
+
 ```yml
 ---
 - name: copy myfile.tar.gz to /tmp
@@ -764,8 +835,11 @@ tar -czvf file1.tar.gz /path/to/file1
   tags:
     - copy_gz_file
 ```
+
 ---
-### lab-10 Download File From URL:
+
+### lab-10 Download File From URL
+
 ```yml
 - name: get file from URL
   ansible.builtin.get_url:
@@ -775,8 +849,11 @@ tar -czvf file1.tar.gz /path/to/file1
   tags:
     - dwonload form url
 ```
+
 ---
-### LAB-11 Unzip File in ansible Host and copy unarchivedd file to hosts:
+
+### LAB-11 Unzip File in ansible Host and copy unarchivedd file to hosts
+
 ```yml
 - name: unzip file on ansible host and copy it to host
   ansible.builtin.unarchive:
@@ -785,8 +862,11 @@ tar -czvf file1.tar.gz /path/to/file1
   tags:
     - unzip_copy
 ```
+
 ---
+
 ### LAB-12 Extract a tarball in hosts with ansible (source and destination are in hosts)
+
 ``` yml
 ---
 - name: extract in host tarball to host
@@ -794,8 +874,11 @@ tar -czvf file1.tar.gz /path/to/file1
      src: /home/file1.tar.gz #host /home dir
      dest: /opt #host /opt
 ```
+
 ---
-# Project:
+
+# Project
+
 ```yml
 ---
 - name: create dir config in etc
@@ -846,10 +929,13 @@ tar -czvf file1.tar.gz /path/to/file1
   tags:
     - unarchive tarball
 ```
+
 > check and find whats happen after running the playbook.
 
 ---
-### LAB-13 Create users and groups:
+
+### LAB-13 Create users and groups
+
 ```yml
 ---
 - name: create test group
@@ -871,7 +957,7 @@ tar -czvf file1.tar.gz /path/to/file1
 
 ---
 
-### LAB-14 delete users and groups:
+### LAB-14 delete users and groups
 
 ```yml
 ---
@@ -892,11 +978,14 @@ tar -czvf file1.tar.gz /path/to/file1
   tags:
     userdel
 ```
+
 > note: RUN > ansible-playbook -i inventory/inventory.yml project.yml --tags=userdel and then
 > ansible-playbook -i inventory/inventory.yml project.yml --tags=groupdel
-            
+
 ---
-LAB-15 Install and Removing Packages:
+
+### LAB-15 Install and Removing Packages:
+
 ```yml
 ---
 - name: install nginx
@@ -920,9 +1009,14 @@ LAB-15 Install and Removing Packages:
   tags:
     - rmv_matrix
 ```
+
 > Note: we have diffrent modules for each distro package management. find it in ansible docs.
 ---
+
+## Using Loop (loop allows you to execute a single task repeatedly over a list of items, enabling efficient, DRY (Don't Repeat Yourself) automation within playbooks.")
+
 LAB-16 Install Multiple Packages using loop
+
 ```yml
 ---
 - name: install multipak with loop
@@ -936,8 +1030,66 @@ LAB-16 Install Multiple Packages using loop
   tags:
     - loop
 ```
+
 ---
-LAB-17 Using Loop (loop allows you to execute a single task repeatedly over a list of items, enabling efficient, DRY (Don't Repeat Yourself) automation within playbooks.")
+
+## Project
+
+    + create 4 file with name file1-4
+    + delete all
+    + with loop and 2 tags
+
+### Project - file creation
+
 ```yml
 ---
-- 
+- name: create 4dir with loop
+  ansible.builtin.file:
+    path: "/home/{{ item }}"
+    state: touch
+  loop:
+    - file1
+    - file2
+    - file3
+    - file4
+  tags:
+    - creloop
+```
+
+### Project - file deletion
+
+```yml
+---
+- name: delete file via loop
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /path/file1
+    - /path/file2
+    - path/file3
+    - /path/file4
+  tags:
+    delloop
+```
+
+---
+
+### LAb 17 Mixing find and loop modules to find and delete file:
+
+```yml
+---
+- name: find and delete tmp files
+  ansible.builtin.find:
+    paths: /tmp
+    patterns: "*.tmp"
+    file_types: file
+  register: tmp_to_delete
+
+- name: delete  found files
+  ansible.builtin.files:
+    path: "{{ item.path }}" #item point to find dictionaries and path indicates the path section in that dict.
+    state: absent
+  loop: "{{ tmp_to_delete.files }}" #here .files is oen of the keys of find modules that list all matched files.
+```
+---
