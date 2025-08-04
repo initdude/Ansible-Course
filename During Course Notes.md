@@ -1015,7 +1015,7 @@ tar -czvf file1.tar.gz /path/to/file1
 
 ## Using Loop (loop allows you to execute a single task repeatedly over a list of items, enabling efficient, DRY (Don't Repeat Yourself) automation within playbooks.")
 
-LAB-16 Install Multiple Packages using loop
+### LAB-16 Install Multiple Packages using loop
 
 ```yml
 ---
@@ -1170,7 +1170,7 @@ LAB-16 Install Multiple Packages using loop
     Command chaining (&&, ||, ;)
 
 ### It's a versatile module that allows for executing shell commands directly, as if you were typing them into a terminal.
-LAB-18 Using Shell Module:
+### LAB-20 Using Shell Module:
 prerequisites: a test script, in com1,com2,com3 like: echo 1 > /root/initdude | echo 2 > /root/initdude | echo 3 > /root/initdude and put them in roles/proj/files/
 ```yml
 ---
@@ -1193,7 +1193,7 @@ prerequisites: a test script, in com1,com2,com3 like: echo 1 > /root/initdude | 
     - ./com3
 ```
 ---
-### LAB-19 Delete Several files using wildcard:
+### LAB-21 Delete Several files using wildcard:
 ```yml
 ---
 - name: create several file to test wildcard
@@ -1219,7 +1219,7 @@ prerequisites: a test script, in com1,com2,com3 like: echo 1 > /root/initdude | 
     - deleteseveralfiles
 ```
 ---
-###LAB-20 Using Command module
+### LAB-22 Using Command module
 ### command module execute a command on a remote host and its more secure, it will not be affected by the user's environment. it execute command remotely.
 ```yml
 - name: command run
@@ -1228,4 +1228,17 @@ prerequisites: a test script, in com1,com2,com3 like: echo 1 > /root/initdude | 
   tags:
     - command
 ```
+---
+### LAB-23 Create file range using "with_sequence"
+```yml
+---
+- name: create many files with_sequence
+  ansible.builtin.file:
+    path: "/home/file{{ item }}"
+    state: touch
+  with_sequence: start=68 end=71 stride=2 #in normal mode will creat file68tofile71 with stride it will be like: file68 file70
+  tags:
+    - seq
+```
+### Note: we can use "stride option " to  stride between numbers and anything we want to make.
 ---
