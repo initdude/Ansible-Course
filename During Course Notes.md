@@ -1193,3 +1193,39 @@ prerequisites: a test script, in com1,com2,com3 like: echo 1 > /root/initdude | 
     - ./com3
 ```
 ---
+### LAB-19 Delete Several files using wildcard:
+```yml
+---
+- name: create several file to test wildcard
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: touch
+  loop:
+    - "/home/file1"
+    - "/home/file2"
+    - "/home/file3"
+  tags:
+    - severalfile
+
+
+
+- name: Delete several files
+  ansible.builtin.shell:
+    cmd: rm -rf "{{ item }}"
+    chdir: /home
+  loop:
+    - "{ file* }"
+  tags:
+    - deleteseveralfiles
+```
+---
+###LAB-20 Using Command module
+### command module execute a command on a remote host and its more secure, it will not be affected by the user's environment. it execute command remotely.
+```yml
+- name: command run
+  ansible.builtin.command:
+    cmd: touch /home/file4
+  tags:
+    - command
+```
+---
