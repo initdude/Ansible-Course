@@ -1093,3 +1093,103 @@ LAB-16 Install Multiple Packages using loop
   loop: "{{ tmp_to_delete.files }}" #here .files is oen of the keys of find modules that list all matched files.
 ```
 ---
+## Working More with items:
+### LAB-18 Creating several users and groups with specification, dynamically:
+```yml
+- name: more complex item to add serveral groups
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+  loop:
+    - { name: "g1" }
+    - { name: "g2" }
+  tags:
+    - group
+
+
+- name: more complex item to add several users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    groups: "{{ item.groups }}"
+    state: present
+  loop:
+    - { name: "user1" , uid: "2020" , groups: "g1" }
+    - { name: "user2" , uid: "2021" , groups: "g1" }
+    - { name: "user3" , uid: "2022" , groups: "g1,g2" }
+  tags:
+    - usuigr
+```
+---
+> the BTS flow must placed here
+
+
+
+
+
+
+
+
+---
+### LAB-19 Service module; Diable,Enable,Remove and Restart Service:
+``` yml
+- name: diable ufw
+  ansible.builtin.service:
+    name: ufw
+    state: stopped
+    enabled: no
+  tags:
+    - dufw
+
+
+- name: restart nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+  tags:
+    - rnginx
+
+
+- name: start and enable ssh service
+  ansible.builtin.service:
+    name: sshd
+    state: started
+    enabled: yes
+  tags:
+    sessh
+```
+---
+ ## Shell Module:
+ ### The shell module in Ansible is used to execute commands in a shell on the target machine. This means that any command you run will be processed by the shell, and you can use shell-specific features like:
+
+    Pipes (|)
+
+    Redirection (>, >>, <)
+
+    Environment variables
+
+    Command chaining (&&, ||, ;)
+
+### It's a versatile module that allows for executing shell commands directly, as if you were typing them into a terminal.
+LAB-18 Using Shell Module:
+prerequisites: a test script, in com1,com2,com3 like: echo 1 > /root/initdude | echo 2 > /root/initdude | echo 3 > /root/initdude and put them in roles/proj/files/
+```yml
+---
+- name: copy scripts to host
+  ansible.builtin.copy:
+    src: "{{ item }}" #files are in /files 
+    dest: /opt
+  loop:
+    - com1
+    - com2
+    - com3
+
+- name: run scripts with shell module
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+    chdir: /opt
+  loop:
+    - ./com1
+    - ./com2
+    - ./com3
+```
+---
