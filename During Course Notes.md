@@ -1242,3 +1242,24 @@ prerequisites: a test script, in com1,com2,com3 like: echo 1 > /root/initdude | 
 ```
 ### Note: we can use "stride option " to  stride between numbers and anything we want to make.
 ---
+# Project2
++ Write Project in New Provsion :
++ create user and group devops
++ create directory /opt/apache_tomcat with user and group devops and permision
+ ) user=rwx group=rwx other=rx)
++ create directory /opt/apache_tomcat/config with user and group devops and permision
+ ) user=rwx group=rwx other=rx)
++ create directory /opt/apache_tomcat/logs with user and group devops and permision (775)
++ create and copy files :
++ catalina.log to /opt/apache_tomcat/logs
++ catalina.sh to /opt/apache_tomcat/config and Permision (777)
++ with permision (user=rwx group=rw other=r) and change catalina.log file and backup
++ catalina.sh :
+    echo running > /opt/apache_tomcat/catalina_test
++ install epel-release , net-snmp , ntp , net-tools with loop
++ enable and restart ntpd service
++ delete all catalina.log backup files
++ run catalina.sh to host and test it…
+---
+you can check the project yml in Projects file in this repo.'
+
