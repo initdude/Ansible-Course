@@ -1261,5 +1261,5 @@ prerequisites: a test script, in com1,com2,com3 like: echo 1 > /root/initdude | 
 + delete all catalina.log backup files
 + run catalina.sh to host and test it…
 ---
-you can check the project yml in Projects file in this repo.'
+> you can check the project yml in Projects file in this repo.
 
