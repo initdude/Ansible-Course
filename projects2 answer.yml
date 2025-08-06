@@ -1,8 +1,10 @@
 ---
-- name: create dveops group
+- name: create devops group
   ansible.builtin.group:
     name: devops
     state: present
+  tags:
+    - create_gr
 
 
 - name: create devops user
@@ -11,6 +13,8 @@
     comment: "devops"
     group: devops
     state: present
+  tags:
+    - create_us
 
 
 
@@ -21,6 +25,8 @@
     mode: "0775"
     owner: devops
     group: devops
+  tags:
+    - create_apache_dir
 
 
 - name: create dir /opt/apache_tomcat/config
@@ -30,6 +36,8 @@
     mode: "0775"
     owner: devops
     group: devops
+  tags:
+    - apa_conf_dir
 
 
 
@@ -40,6 +48,8 @@
     mode: "0775"
     owner: devops
     group: devops
+  tags:
+    - apa_logs_dir
 
 
 
@@ -49,6 +59,8 @@
     dest: /opt/apache_tomcat/logs
     mode: "0764"
     backup: yes
+  tags:
+    - catalina_logs_copy
 
 
 - name: copy catalina.sh to /opt/apache
@@ -56,6 +68,8 @@
     src: catalina.sh
     dest: /opt/apache_tomcat/config/
     mode: "0777"
+  tags:
+    - catalina_sh_copy
 
 
 - name: install some packges
@@ -85,3 +99,12 @@
     state: absent
   loop:
     - /opt/apache_tomcat/logs/catalina.*
+  tags:
+    - delete_logs
+
+- name: run catalina.sh in host
+  ansible.builtin.command:
+    cmd: /opt/apache_tomcat/config/catalina.sh
+  tags:
+    - run sh on host
+
