@@ -1,0 +1,87 @@
+---
+- name: create dveops group
+  ansible.builtin.group:
+    name: devops
+    state: present
+
+
+- name: create devops user
+  ansible.builtin.user:
+    name: devops
+    comment: "devops"
+    group: devops
+    state: present
+
+
+
+- name: create directory /opt/apache_tomcat
+  ansible.builtin.file:
+    path: /opt/apache_tomcat
+    state: directory
+    mode: "0775"
+    owner: devops
+    group: devops
+
+
+- name: create dir /opt/apache_tomcat/config
+  ansible.builtin.file:
+    path: /opt/apache_tomcat/config
+    state: directory
+    mode: "0775"
+    owner: devops
+    group: devops
+
+
+
+- name: create dir logs in apache tomcat
+  ansible.builtin.file:
+    path: /opt/apache_tomcat/logs
+    state: directory
+    mode: "0775"
+    owner: devops
+    group: devops
+
+
+
+- name: copy catalina.log  /opt/apache_tomcat/logs
+  ansible.builtin.copy:
+    src: catalina.log
+    dest: /opt/apache_tomcat/logs
+    mode: "0764"
+    backup: yes
+
+
+- name: copy catalina.sh to /opt/apache
+  ansible.builtin.copy:
+    src: catalina.sh
+    dest: /opt/apache_tomcat/config/
+    mode: "0777"
+
+
+- name: install some packges
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - cmatrix
+    - net-snmp
+    - ntp
+    - net-tools
+  tags:
+    - install_pkg
+
+
+- name: enable and restart ntpd
+  ansible.builtin.service:
+    name: ntpd
+    state: restarted
+    enabled: yes
+  tags: res_ntp
+
+
+- name: delete all catalina logs and backups
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /opt/apache_tomcat/logs/catalina.*
