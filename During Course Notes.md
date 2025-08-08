@@ -1289,6 +1289,44 @@ tags:
     - restart unmask mariadb
 ```
 ---
+### LAB-25 Create Devops test db in mariadb
+```yml
+---
+- name: create devops db
+  community.mysql.mysql_db:
+    name: devops
+    state: present
+  tags:
+    cdb
 
 
-
+```
+---
+### We can also have Postgresql, i will use it to test ansbledb module as we go
+### Install the collection:
+```bash
+ansible-galaxy collection install community.postgresql
+```
+---
+### LAB-26 Install PostgreSQL DB
+```yml
+---
+- name: install postgresql and it's dependency
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python3-psycopg2
+    - postgresql
+  tags:
+    - postgres
+  
+- name: ensure postgres is instlled and running
+  ansible.builtin.service:
+    name: postgresql
+    state: started
+    enabled: yes
+  tags:
+    postgresq se
+```
+---
