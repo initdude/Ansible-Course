@@ -1263,3 +1263,32 @@ prerequisites: a test script, in com1,com2,com3 like: echo 1 > /root/initdude | 
 ---
 > you can check the project yml in Projects file in this repo.
 
+### ansible datatbase module:
+### for useing ansible database module the host server must run a database server like mariadb.sqlserver..
+### LAB-24 install mariadb and mysql server
+```yml
+---
+-name: install mdb and sql
+ansible.builtin.apt
+  name: "{{ item }}"
+  state: presnet
+loop:
+  - mariadb-server
+  - mysql-server
+  - python3-mysqldb
+tags:
+  - install_mdb
+
+- name: start enable mariadb
+  ansible.builtin.service:
+    name: mariadb
+    state: restarted
+    enabled: yes
+    masked: no
+  tags:
+    - restart unmask mariadb
+```
+---
+
+
+
