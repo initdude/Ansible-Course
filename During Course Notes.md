@@ -1330,3 +1330,53 @@ ansible-galaxy collection install community.postgresql
     postgresq se
 ```
 ---
+ansible database labs must placed here...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Working vit Variables (vars) in ansible
+### we can define vars in playbooks,vars,defaults,tasks and templates. but some are moe common than othes.
+### Define vars in playbook (for example myproject.yml to create and download URL with used Variable)
+```yml
+---
+vars:
+   paths:
+      url: "http://ftp.rpm.org/releases/rpm-4.14.x"
+      major_version: 4
+      minor_version: 14.1
+roles:
+  - myproject
+```
+### Then we call it in tasks/main.yml
+```yml
+---
+- name: Download RPM
+  ansible.builtin.get_url
+  url: {{ paths.url}}/rpm-{{paths.major_version }}.{{paths.minor_version}}.tar.bz2
+  dest: /tmp
+```
+---
