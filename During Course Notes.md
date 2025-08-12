@@ -1376,7 +1376,7 @@ roles:
 ---
 - name: Download RPM
   ansible.builtin.get_url
-  url: {{ paths.url}}/rpm-{{paths.major_version }}.{{paths.minor_version}}.tar.bz2
+  url: "{{ paths.url }}/rpm-{{ paths.major_version }}.{{ paths.minor_version }}.tar.bz2
   dest: /tmp
 ```
 ---
