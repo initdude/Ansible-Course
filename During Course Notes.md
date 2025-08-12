@@ -1392,6 +1392,7 @@ user_list:
 ```
 ### 2- in tasks/main.yml
 ```yml
+---
 - name: create test group
   ansible.builtin.group:
      name: "{{ item.name }}"
