@@ -1402,14 +1402,23 @@ user_list:
    tags:
      - group
 
-- name: create user test
+- name: Create test group using vars
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+    state: present
+  loop: "{{ user_list }}"
+  tags:
+    - group
+
+- name: Create user
   ansible.builtin.user:
-   name: "{{ item.name }}"
+    name: "{{ item.name }}"
     comment: "test"
     group: "{{ item.name }}"
-  loop:
-    - "{{ user_list }}"
+    state: present
+  loop: "{{ user_list }}"
   tags:
-    - user
+    - users
+
 ```
 ---
