@@ -1379,4 +1379,5 @@ roles:
   url: "{{ paths.url }}/rpm-{{ paths.major_version }}.{{ paths.minor_version }}.tar.bz2
   dest: /tmp
 ```
+> RUN: ansible-playbook -i inventory/myhost.yml myproject.yml
 ---
