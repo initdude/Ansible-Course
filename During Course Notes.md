@@ -1381,3 +1381,34 @@ roles:
 ```
 > RUN: ansible-playbook -i inventory/myhost.yml myproject.yml
 ---
+### Create Variables Userlist in vars Directory and use in task directory:
+### 1- in vars/main.yml
+```yml
+---
+user_list:
+- { parameter: 'var1' }
+- { parameter: 'var1' }
+- { parameter: 'var1' }
+```
+### 2- in tasks/main.yml
+```yml
+- name: create test group
+  ansible.builtin.group:
+     name: "{{ item.name }}"
+     state: presnet
+  loop:
+    - "{{ user_list }}"
+   tags:
+     - group
+
+- name: create user test
+  ansible.builtin.user:
+   name: "{{ item.name }}"
+    comment: "test"
+    group: "{{ item.name }}"
+  loop:
+    - "{{ user_list }}"
+  tags:
+    - user
+```
+---
