@@ -1526,6 +1526,34 @@ dependencies:
 - { role: base} #in /roles/base/tasks/main.yml
 ```
 ---
+## LAB29 install mariadb with Notify and search_Regex Handlers:
+> in /roles/mariadb_start/tasks/main.yml
+```yml
+---
+- name: install mariadb
+  ansible.builtin.apt:
+    name: mariadb-server
+    state: present
+  notify: Restart mariadb
+  tags:
+    mariadb installation
+```
+> in roles/mariadb_start/handlers/main.yml
+```yml
+---
+- name: Restart mariadb
+  ansible.builtin.service:
+    name: mariadb
+    state: restarted
+  notify:
+    - wait for mariadb
+
+  - name: wait for mariadb
+    ansible.builtin.wait_for:
+      path: "/var/log/mariadb/mariadb.log"
+      search_regex: "started"
+      delay: 20
+      timeout: 30
 
 
 
