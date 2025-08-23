@@ -1330,3 +1330,48 @@ ansible-galaxy collection install community.postgresql
     postgresq se
 ```
 ---
+### LAB 27 Create dir for installing weblogic
+```yml
+---
+    state: present
+- name: create weblogic user
+  ansible.builtin.user:
+    name: weblogic
+    state: present
+    comment: "weblogic"
+    group: weblogic
+  tags:
+    - weblogic user and group
+
+
+
+- name: create tomcat groups
+  ansible.builtin.group:
+    name: tomcat
+    state: present
+- name: create tomcat user
+  ansible.builtin.user:
+    name: tomcat
+    state: present
+    comment: "tomcat"
+    group: tomcat
+  tags:
+    - tomcat user and group:
+
+
+
+- name: Create three directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  loop:
+    - { path: "/home/dir10", mode: "0755", owner: "root", group: "root" }
+    - { path: "/opt/dir20", mode: "0744", owner: "weblogic", group: "weblogic" }
+    - { path: "/var/dir30", mode: "0754", owner: "tomcat", group: "tomcat" }
+```
+
+---
+
