@@ -1495,6 +1495,40 @@ user_list:
 + run Playbook and ansible will setup an apache server and restart it as it copied the configuration file in place.
 
 ---
+### Meta dir
+> as we run a playbook, ansible will check this directory to ensure what dependencies must be satisfied before the main role runs, imagine we have a base role that will first install net-tools, curl,wget and other basic prerequisites for out project, so first we create the meta directory and in it we tell which packages must be install or which tasks like copy something or ...must be done first; there is 2 option to write dependencies in meta. attention to the following example:
+
+### In /meta/main.yml
+>option A: write all block of basic tasks in main.yml:
+```yml
+---
+- name: Install basic packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - net-tools
+    - curl
+    - telnet
+    - tcpdump
+    ...
+
+    - name: change time zone
+      ansible.builtin.command:
+        cmd: timedatectl set-timedate Asia/Tehran
+      tags:
+        - date
+```
+> option B: write all dependencies in a separated role and define it in meta/main.yml
+```yml
+---
+dependencies:
+- { role: base} #in /roles/base/tasks/main.yml
+```
+---
+
+
+
 
 
 
