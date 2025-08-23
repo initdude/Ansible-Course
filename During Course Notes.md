@@ -1330,6 +1330,100 @@ ansible-galaxy collection install community.postgresql
     postgresq se
 ```
 ---
+=======
+ansible database labs must placed here...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+## Working vit Variables (vars) in ansible
+### we can define vars in playbooks,vars,defaults,tasks and templates. but some are moe common than othes.
+### Define vars in playbook (for example myproject.yml to create and download URL with used Variable)
+```yml
+---
+vars:
+   paths:
+      url: "http://ftp.rpm.org/releases/rpm-4.14.x"
+      major_version: 4
+      minor_version: 14.1
+roles:
+  - myproject
+```
+### Then we call it in tasks/main.yml
+```yml
+---
+- name: Download RPM
+  ansible.builtin.get_url
+  url: "{{ paths.url }}/rpm-{{ paths.major_version }}.{{ paths.minor_version }}.tar.bz2
+  dest: /tmp
+```
+> RUN: ansible-playbook -i inventory/myhost.yml myproject.yml
+---
+### Create Variables Userlist in vars Directory and use in task directory:
+### 1- in vars/main.yml
+```yml
+---
+user_list:
+- { parameter: 'var1' }
+- { parameter: 'var1' }
+- { parameter: 'var1' }
+```
+### 2- in tasks/main.yml
+```yml
+---
+- name: create test group
+  ansible.builtin.group:
+     name: "{{ item.name }}"
+     state: presnet
+  loop:
+    - "{{ user_list }}"
+   tags:
+     - group
+
+- name: Create test group using vars
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+    state: present
+  loop: "{{ user_list }}"
+  tags:
+    - group
+
+- name: Create user
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    comment: "test"
+    group: "{{ item.name }}"
+    state: present
+  loop: "{{ user_list }}"
+  tags:
+    - users
+
+```
+---
+>>>>>>> 858f02c58dea9fbb4ffaa87b9c46194e5b00deb6
 ### LAB 27 Create dir for installing weblogic
 ```yml
 ---
@@ -1372,6 +1466,3 @@ ansible-galaxy collection install community.postgresql
     - { path: "/opt/dir20", mode: "0744", owner: "weblogic", group: "weblogic" }
     - { path: "/var/dir30", mode: "0754", owner: "tomcat", group: "tomcat" }
 ```
-
----
-
