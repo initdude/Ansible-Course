@@ -1423,7 +1423,6 @@ user_list:
 
 ```
 ---
->>>>>>> 858f02c58dea9fbb4ffaa87b9c46194e5b00deb6
 ### LAB 27 Create dir for installing weblogic
 ```yml
 ---
@@ -1466,3 +1465,36 @@ user_list:
     - { path: "/opt/dir20", mode: "0744", owner: "weblogic", group: "weblogic" }
     - { path: "/var/dir30", mode: "0754", owner: "tomcat", group: "tomcat" }
 ```
+---
+### LAB 28 Insalling Apache (as new project dir) and use handlers 
+```yml
+---
+- name: isntsall apache
+  ansible.builtin.apt:
+    name: apache2
+    state: present 
+  tags:
+    - httpd
+  
+- name: copy httpd.conf to /etc/
+  ansible.builtin.template:
+    src: httpd.conf.j2
+    dest: /etc/apache2/apache2.conf
+  notify: Restart Apache #this must exactly placed in handlers
+```
+> in /handlers/main.yml:
+```yml
+---
+- name: Restart Apache 
+  ansible.builtin.service:
+    name: httpd
+    state: restarted
+  tags:
+    - restarted
+```
++ run Playbook and ansible will setup an apache server and restart it as it copied the configuration file in place.
+
+---
+
+
+
